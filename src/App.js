@@ -1,23 +1,49 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react'
 import './App.css';
 
 function App() {
+
+  const [quote, setQuote] = useState("")
+
+
+  const fetchData = () => {
+    const config = {
+      headers: {
+        Accept: "application/json",
+      },
+    }
+
+
+    fetch("https://icanhazdadjoke.com/", config)
+      .then(res => res.json())
+      .then(data => {
+        setQuote(() => data)
+      })
+  }
+  
+
+
+  useEffect(() => {
+    fetchData()
+  }, [])  
+
+
+  const handleClick = () => {
+    fetchData()
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <p>Joke: {quote.joke}</p> */}
+      <div className='card'>
+        <div className='card-title'>
+            Dad Jokes
+        </div>
+        <div className='card-body'>
+            {quote.joke}
+        </div>
+        <button onClick={handleClick} className='jokeBtn'>Next Joke</button>
+      </div>
     </div>
   );
 }
